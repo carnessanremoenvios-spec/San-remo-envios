@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Remo Boutique | Carnicería Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; }
+        h1, h2, .font-serif { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="text-stone-200">
+
+    <nav class="p-6 border-b border-stone-800 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="text-2xl font-serif tracking-tighter text-amber-600">SAN REMO <span class="text-stone-400">BOUTIQUE</span></div>
+        <div class="space-x-6 text-xs uppercase tracking-widest font-bold">
+            <a href="#" class="hover:text-amber-500">Cortes</a>
+            <a href="#" class="hover:text-amber-500">Zonas de Envío</a>
+            <button class="bg-amber-700 px-4 py-2 rounded-sm"><i class="fas fa-shopping-cart"></i> Carrito</button>
+        </div>
+    </nav>
+
+    <header class="py-20 px-6 text-center border-b border-stone-900 bg-[url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2069&auto=format&fit=crop')] bg-cover bg-center">
+        <div class="bg-black/60 p-12 inline-block rounded-sm backdrop-blur-sm">
+            <h1 class="text-5xl mb-4">Del Matarife a tu Parrilla</h1>
+            <p class="text-stone-400 max-w-xl mx-auto mb-8 font-light italic">Carne premium envasada al vacío. Sin intermediarios, solo calidad artesanal.</p>
+            <div class="flex justify-center gap-4">
+                <span class="border border-stone-700 px-4 py-2 text-[10px] uppercase">CABA</span>
+                <span class="border border-stone-700 px-4 py-2 text-[10px] uppercase">GBA NORTE</span>
+                <span class="border border-stone-700 px-4 py-2 text-[10px] uppercase">GBA OESTE</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-4xl mx-auto my-12 p-8 bg-stone-900/50 border border-stone-800 rounded-lg">
+        <h2 class="text-2xl mb-6 text-center italic text-amber-500">Calculá tu Envío</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-stone-500 mb-2">Selecciona tu zona</label>
+                <select id="zonaSelect" onchange="calcularEnvio()" class="w-full bg-black border border-stone-700 p-3 rounded text-stone-300">
+                    <option value="0">Seleccionar...</option>
+                    <option value="1">CABA (Envío $1500 - Gratis +$15000)</option>
+                    <option value="2">GBA Norte (Envío $2500 - Martes/Jueves)</option>
+                    <option value="3">GBA Oeste (Envío $2500 - Miércoles/Viernes)</option>
+                </select>
+            </div>
+            <div id="resultadoEnvio" class="bg-black/40 p-4 border-l-2 border-amber-600 hidden">
+                <p id="envioTexto" class="text-sm"></p>
+                <p id="diaTexto" class="text-[10px] text-stone-500 mt-1 uppercase"></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 pb-20">
+        <div class="bg-stone-900 border border-stone-800 group">
+            <div class="h-48 bg-[url('https://images.unsplash.com/photo-1551028150-64b9f398f678?q=80&w=1987&auto=format&fit=crop')] bg-cover bg-center overflow-hidden">
+                <div class="w-full h-full bg-black/20 group-hover:bg-transparent transition-all"></div>
+            </div>
+            <div class="p-6">
+                <span class="text-[9px] bg-amber-900/30 text-amber-500 px-2 py-1 rounded uppercase tracking-widest">Parrilla</span>
+                <h3 class="text-xl mt-2 font-serif">Ojo de Bife Boutique</h3>
+                <p class="text-stone-500 text-xs my-4">Corte de exportación, madurado 21 días y sellado al vacío.</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-xl font-bold font-mono">$12.500</span>
+                    <button class="text-xs border border-stone-700 px-4 py-2 hover:bg-stone-100 hover:text-black transition">AGREGAR</button>
+                </div>
+            </div>
+        </div>
+        </section>
+
+    <script>
+        function calcularEnvio() {
+            const zona = document.getElementById('zonaSelect').value;
+            const res = document.getElementById('resultadoEnvio');
+            const texto = document.getElementById('envioTexto');
+            const dia = document.getElementById('diaTexto');
+            
+            res.classList.remove('hidden');
+            
+            if(zona == "1") {
+                texto.innerText = "Envío: $1500 (Gratis desde $15.000)";
+                dia.innerText = "Entrega en 24hs hábiles";
+            } else if(zona == "2") {
+                texto.innerText = "Envío: $2500 (Mínimo $20.000)";
+                dia.innerText = "Días de entrega: Martes y Jueves";
+            } else if(zona == "3") {
+                texto.innerText = "Envío: $2500 (Mínimo $20.000)";
+                dia.innerText = "Días de entrega: Miércoles y Viernes";
+            } else {
+                res.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
