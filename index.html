@@ -17,45 +17,51 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
 <body class="text-stone-200">
 
-<header class="relative h-[95vh] w-full overflow-hidden flex items-center">
+<header class="relative h-[95vh] w-full flex items-center justify-center text-center overflow-hidden">
 
-  <!-- IMAGEN FONDO -->
+  <!-- IMAGEN -->
   <div class="absolute inset-0">
     <img src="https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=2070&auto=format&fit=crop"
          class="w-full h-full object-cover" />
 
-    <!-- OVERLAY PRO (gradiente) -->
-    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+    <!-- OVERLAY OSCURO PRO -->
+    <div class="absolute inset-0 bg-black/75"></div>
   </div>
 
   <!-- CONTENIDO -->
-  <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+  <div class="relative z-10 px-6 max-w-3xl">
 
-    <div class="max-w-xl">
+    <!-- TITULO -->
+    <h1 class="text-5xl md:text-6xl font-serif leading-tight mb-6 text-stone-200">
+      El asado perfecto <br> empieza acá.
+    </h1>
 
-      <h1 class="text-5xl md:text-6xl font-serif leading-tight mb-6">
-        El asado perfecto <br> empieza acá.
-      </h1>
+    <!-- SUB -->
+    <p class="text-stone-400 text-lg mb-10">
+      Selección premium lista para tu parrilla.
+    </p>
 
-      <p class="text-stone-400 text-lg mb-8">
-        Selección premium lista para tu parrilla.
-      </p>
-
-      <!-- ZONAS -->
-      <div class="flex gap-4 mb-8 flex-wrap">
-        <span class="border border-stone-600 px-4 py-2 text-xs uppercase">CABA</span>
-        <span class="border border-stone-600 px-4 py-2 text-xs uppercase">GBA NORTE</span>
-        <span class="border border-stone-600 px-4 py-2 text-xs uppercase">GBA OESTE</span>
-      </div>
-
-      <!-- BOTÓN PRO -->
-      <button 
-        onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})"
-        class="bg-red-800 hover:bg-red-700 transition px-10 py-4 text-sm uppercase tracking-widest shadow-lg">
-        Armar mi asado
-      </button>
-
+    <!-- ZONAS -->
+    <div class="flex justify-center gap-4 mb-10 flex-wrap">
+      <span class="border border-stone-500 bg-black/40 backdrop-blur px-5 py-2 text-xs uppercase tracking-widest">
+        CABA
+      </span>
+      <span class="border border-stone-500 bg-black/40 backdrop-blur px-5 py-2 text-xs uppercase tracking-widest">
+        GBA NORTE
+      </span>
+      <span class="border border-stone-500 bg-black/40 backdrop-blur px-5 py-2 text-xs uppercase tracking-widest">
+        GBA OESTE
+      </span>
     </div>
+
+    <!-- BOTON -->
+    <button 
+      onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})"
+      class="px-10 py-4 text-sm uppercase tracking-widest border border-red-900 
+             bg-gradient-to-r from-red-900 to-red-700 
+             hover:from-red-800 hover:to-red-600 transition shadow-xl">
+      ARMAR MI ASADO
+    </button>
 
   </div>
 
