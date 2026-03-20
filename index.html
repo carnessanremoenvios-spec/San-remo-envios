@@ -1,208 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>San Remo Boutique</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;700&display=swap');
-
-body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; }
-h1, h2, h3 { font-family: 'Playfair Display', serif; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Remo Boutique - El asado perfecto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-gold': '#C49D71', // Color dorado para el logo y acentos
+                        'brand-red': '#7C1E18',  // Color rojo oscuro para el botón
+                        'brand-dark': '#131313',  // Fondo oscuro casi negro
+                    },
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'], // Tipografía serif para el título
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo para los botones de zona (bordes finos y transparentes) */
+        .zone-btn {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: transparent;
+            color: white;
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .zone-btn:hover {
+            border-color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
+<body class="bg-brand-dark text-white font-sans antialiased">
 
-<body class="text-stone-200">
+    <section class="relative min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('{{ $IMAGEN_DE_FONDO_REQUERIDA }}');">
+        
+        <div class="absolute inset-0 bg-black/50"></div>
 
-<header class="relative h-[95vh] w-full flex items-center justify-center text-center overflow-hidden">
+        <div class="relative z-10 flex flex-col min-h-screen">
+            
+            <header class="flex items-center justify-between px-10 py-6 border-b border-white/10">
+                <div class="text-brand-gold text-2xl font-bold tracking-widest uppercase">
+                    San Remo <span class="font-normal">Boutique</span>
+                </div>
+                
+                <nav class="flex items-center gap-10">
+                    <a href="#" class="text-sm uppercase tracking-widest hover:text-brand-gold transition">Cortes</a>
+                    <a href="#" class="text-sm uppercase tracking-widest hover:text-brand-gold transition">Zonas de Envío</a>
+                    
+                    <div class="flex items-center gap-2 text-sm text-brand-gold">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        <span>+54 1221-1-567</span>
+                    </div>
 
-  <!-- IMAGEN -->
-  <div class="absolute inset-0">
-    <img src="https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=2070&auto=format&fit=crop"
-         class="w-full h-full object-cover" />
+                    <a href="#" class="flex items-center gap-2 px-6 py-2 bg-brand-red rounded text-sm font-semibold hover:bg-red-800 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <span>Carrito</span>
+                    </a>
+                </nav>
+            </header>
 
-    <!-- OVERLAY OSCURO PRO -->
-    <div class="absolute inset-0 bg-black/75"></div>
-  </div>
+            <main class="flex-grow flex flex-col items-center justify-center text-center px-6">
+                
+                <h1 class="font-playfair text-6xl md:text-7xl leading-tight max-w-4xl mb-6">
+                    El asado perfecto empieza acá.
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-white/80 font-light max-w-2xl mb-12">
+                    Selección premium lista para tu parrilla.
+                </p>
+                
+                <div class="flex items-center gap-4 mb-16">
+                    <button class="zone-btn">CABA</button>
+                    <button class="zone-btn">GBA Norte</button>
+                    <button class="zone-btn">GBA Oeste</button>
+                </div>
+                
+                <button class="px-12 py-5 bg-brand-red rounded text-base font-bold uppercase tracking-widest hover:bg-red-800 transition shadow-lg">
+                    Armar mi Asado
+                </button>
 
-  <!-- CONTENIDO -->
-  <div class="relative z-10 px-6 max-w-3xl">
+            </main>
 
-    <!-- TITULO -->
-    <h1 class="text-5xl md:text-6xl font-serif leading-tight mb-6 text-stone-200">
-      El asado perfecto <br> empieza acá.
-    </h1>
+        </div>
+    </section>
 
-    <!-- SUB -->
-    <p class="text-stone-400 text-lg mb-10">
-      Selección premium lista para tu parrilla.
-    </p>
-
-    <!-- ZONAS -->
- <div class="flex justify-center gap-4 mb-10 flex-wrap">
-
-  <span class="px-6 py-2 text-xs uppercase tracking-widest 
-  border border-white/20 
-  text-white/90
-  bg-white/10
-  backdrop-blur-md 
-  hover:bg-white/10 
-  hover:text-white 
-  transition duration-300">
-    CABA
-  </span>
-
-  <span class="px-6 py-2 text-xs uppercase tracking-widest 
-  border border-white/20 
- text-white/90 
-  bg-white/10
-  backdrop-blur-md 
-  hover:bg-white/10 
-  hover:text-white 
-  transition duration-300">
-    GBA NORTE
-  </span>
-
-  <span class="px-6 py-2 text-xs uppercase tracking-widest 
-  border border-white/20 
- text-white/90 
-  bg-white/10
-  backdrop-blur-md 
-  hover:bg-white/10 
-  hover:text-white 
-  transition duration-300">
-    GBA OESTE
-  </span>
-
-</div>
-    <!-- BOTON -->
- <button 
-onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})"
-class="px-12 py-4 text-sm uppercase tracking-widest 
-text-white 
-bg-gradient-to-r from-red-700 via-red-800 to-red-900 
-hover:from-red-600 hover:via-red-700 hover:to-red-800 
-transition duration-300 
-shadow-[0_15px_40px_rgba(0,0,0,0.7)] 
-border border-red-800/40 
-rounded-sm"
-  ARMAR MI ASADO
-</button>
-  </div>
-
-</header>
-
-<!-- ENVIO -->
-<section class="max-w-3xl mx-auto p-6">
-<input id="cpInput" placeholder="Tu código postal"
-class="w-full p-3 bg-black border border-stone-700 mb-3">
-
-<button onclick="calcularEnvio()" class="w-full bg-amber-700 py-2 rounded">
-Calcular Envío
-</button>
-
-<div id="resultadoEnvio" class="hidden mt-3 text-sm"></div>
-</section>
-
-<!-- PRODUCTO -->
-<section class="max-w-3xl mx-auto p-6">
-<h2 class="text-xl mb-4">Ojo de Bife</h2>
-
-<button onclick="addToCart('Ojo de Bife',12500)"
-class="bg-amber-700 px-4 py-2 rounded">
-Agregar
-</button>
-</section>
-
-<!-- CARRITO -->
-<div class="fixed bottom-0 right-0 bg-black p-4 w-80">
-<div id="cart"></div>
-
-<button onclick="sendToWhatsApp()"
-class="bg-green-600 w-full mt-3 py-2 rounded">
-WhatsApp
-</button>
-
-<a href="https://mpago.la/abcd123"
-target="_blank"
-class="block bg-blue-600 w-full mt-2 py-2 text-center rounded">
-Mercado Pago
-</a>
-
-</div> 
-
-<!-- CONTACTO -->
-<section class="text-center mt-10">
-<p>WhatsApp: 1122911567</p>
-<p>Mail: carnessanremoenvios@gmail.com</p>
-</section>
-
-<script>
-let cart = [];
-
-function addToCart(n,p){
-cart.push({n,p});
-renderCart();
-}
-
-function renderCart(){
-let html="";
-let total=0;
-
-cart.forEach((i,index)=>{
-total+=i.p;
-html+=`
-<div class="flex justify-between">
-${i.n} $${i.p}
-<button onclick="removeItem(${index})">X</button>
-</div>`;
-});
-
-html+=`<p>Total: $${total}</p>`;
-
-if(total>=200000){
-html+=`<p style="color:green">Envio GRATIS</p>`;
-}
-
-document.getElementById("cart").innerHTML=html;
-}
-
-function removeItem(i){
-cart.splice(i,1);
-renderCart();
-}
-
-function calcularEnvio(){
-let cp=document.getElementById("cpInput").value;
-
-let res=document.getElementById("resultadoEnvio");
-
-res.classList.remove("hidden");
-res.innerText="Entrega jueves y viernes. Envío se confirma por CP.";
-}
-
-function sendToWhatsApp(){
-let msg="Pedido:%0A";
-let total=0;
-
-cart.forEach(i=>{
-msg+=`- ${i.n} $${i.p}%0A`;
-total+=i.p;
-});
-
-msg+=`Total: $${total}%0A`;
-
-if(total>=200000){
-msg+="Envio GRATIS%0A";
-}
-
-msg+="CP: ______";
-
-window.open(`https://wa.me/5491122911567?text=${msg}`);
-}
-</script>
 </body>
 </html>
