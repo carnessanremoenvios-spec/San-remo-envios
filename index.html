@@ -39,6 +39,12 @@
             border-color: white;
             background-color: rgba(255, 255, 255, 0.1);
         }
+        .zone-btn.active {
+    background-color: #C49D71; /* El dorado de San Remo */
+    color: #131313; /* Texto oscuro para contraste */
+    border-color: #C49D71;
+    font-weight: bold;
+}
     </style>
 </head>
 <body class="bg-brand-dark text-white font-sans antialiased">
@@ -80,12 +86,12 @@
                     Selección premium lista para tu parrilla.
                 </p>
                 
-                <div class="flex items-center gap-4 mb-16">
-                    <button class="zone-btn">CABA</button>
-                    <button class="zone-btn">GBA Norte</button>
-                    <button class="zone-btn">GBA Oeste</button>
-                </div>
-                
+               <div class="flex items-center gap-4 mb-16" id="zona-selector">
+    <button class="zone-btn active" data-zona="caba">CABA</button>
+    <button class="zone-btn" data-zona="norte">GBA Norte</button>
+    <button class="zone-btn" data-zona="oeste">GBA Oeste</button>
+</div>
+              
                 <button class="px-12 py-5 bg-brand-red rounded text-base font-bold uppercase tracking-widest hover:bg-red-800 transition shadow-lg">
                     Armar mi Asado
                 </button>
@@ -94,6 +100,25 @@
 
         </div>
     </section>
+<script>
+    // 1. Seleccionamos todos los botones que tienen la clase 'zone-btn'
+    const botonesZona = document.querySelectorAll('.zone-btn');
 
+    botonesZona.forEach(boton => {
+        boton.addEventListener('click', () => {
+            // 2. Quitamos la clase 'active' de todos los botones para "apagarlos"
+            botonesZona.forEach(b => b.classList.remove('active'));
+
+            // 3. Agregamos la clase 'active' solo al botón que tocamos
+            boton.classList.add('active');
+
+            // 4. Guardamos la zona en la "memoria" del navegador para el futuro
+            const zonaElegida = boton.getAttribute('data-zona');
+            console.log("Zona seleccionada para logística:", zonaElegida);
+            
+            // Aquí podrías disparar una alerta o filtrar productos luego
+        });
+    });
+</script>
 </body>
 </html>
