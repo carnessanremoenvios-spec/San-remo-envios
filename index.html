@@ -402,8 +402,8 @@
 
 </div>
 </section>
-<script>
-      <div id="cart-overlay" class="fixed inset-0 bg-black/80 z-[60] hidden transition-opacity duration-300 opacity-0"></div>
+
+<div id="cart-overlay" class="fixed inset-0 bg-black/80 z-[60] hidden transition-opacity duration-300 opacity-0"></div>
 
 <div id="cart-panel" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-stone-950 z-[70] transform translate-x-full transition-transform duration-500 ease-in-out border-l border-white/10 flex flex-col">
     <div class="p-6 border-b border-white/10 flex justify-between items-center">
@@ -427,14 +427,15 @@
         </button>
         <p class="text-[10px] text-white/30 text-center mt-4">Los precios finales pueden variar según el pesaje exacto.</p>
     </div>
+</div>
 
-    let carrito = [];
+<script>
+let carrito = [];
 const cartPanel = document.getElementById('cart-panel');
 const cartOverlay = document.getElementById('cart-overlay');
 const cartItemsContainer = document.getElementById('cart-items');
 const cartTotalElement = document.getElementById('cart-total');
 
-// Función para abrir/cerrar carrito
 function toggleCart() {
     cartPanel.classList.toggle('translate-x-full');
     cartOverlay.classList.toggle('hidden');
@@ -442,20 +443,24 @@ function toggleCart() {
 }
 
 document.getElementById('close-cart').addEventListener('click', toggleCart);
-document.querySelector('[href="#"]').addEventListener('click', (e) => {
-    if(e.target.innerText.includes('Carrito')) { e.preventDefault(); toggleCart(); }
-});
 
-// Lógica de "Agregar"
+// ... (continuación del código de arriba)
+
+// Configuración de botones AGREGAR
 document.querySelectorAll('button').forEach(btn => {
-    if (btn.innerText === "AGREGAR") {
+    // IMPORTANTE: El código busca la palabra exacta "Agregar" o "AGREGAR"
+    if (btn.innerText.toUpperCase() === "AGREGAR") {
         btn.addEventListener('click', () => {
             const card = btn.closest('.group');
             const nombre = card.querySelector('h3').innerText;
-            const precio = parseInt(card.querySelector('.text-brand-gold.text-2xl').innerText.replace('$', '').replace('.', ''));
+            const precioTexto = card.querySelector('.text-brand-gold.text-2xl').innerText;
+            
+            // Limpiamos el precio ($ y puntos) para poder sumar
+            const precio = parseInt(precioTexto.replace('$', '').replace(/\./g, ''));
             
             agregarAlCarrito(nombre, precio);
-            toggleCart(); // Opcional: abre el carrito al agregar
+            // Abrir el carrito automáticamente al agregar algo
+            if(cartPanel.classList.contains('translate-x-full')) toggleCart();
         });
     }
 });
@@ -493,41 +498,42 @@ function renderizarCarrito() {
     cartTotalElement.innerText = `$${total.toLocaleString()}`;
 }
 
-function eliminarDelCarrito(index) {
+// Función global para que el botón "X" de cada item funcione
+window.eliminarDelCarrito = function(index) {
     carrito.splice(index, 1);
     renderizarCarrito();
-}
+};
 
-// Botón de WhatsApp final
+// Lógica de los botones de zona (CABA, Norte, etc)
+const botonesZona = document.querySelectorAll('.zone-btn');
+botonesZona.forEach(boton => {
+    boton.addEventListener('click', () => {
+        botonesZona.forEach(b => b.classList.remove('active'));
+        boton.classList.add('active');
+    });
+});
+
+// Botón final de WhatsApp
 document.getElementById('whatsapp-btn').addEventListener('click', () => {
+    if (carrito.length === 0) return alert("Tu pedido está vacío");
+    
     const zona = document.querySelector('.zone-btn.active')?.innerText || "No especificada";
-    let mensaje = `Hola San Remo Boutique! 👋 Mi pedido desde la web (%2A${zona}%2A):%0A%0A`;
+    let mensaje = `Hola San Remo Boutique! 👋 Mi pedido (%2A${zona}%2A):%0A%0A`;
+    
     carrito.forEach(item => {
         mensaje += `- ${item.cantidad} x ${item.nombre} ($${(item.precio * item.cantidad).toLocaleString()})%0A`;
     });
+    
     mensaje += `%0A%2ATotal Estimado: ${cartTotalElement.innerText}%2A`;
     
-    window.open(`https://wa.me/541112345678?text=${mensaje}`, '_blank');
+    // Reemplaza con tu número real de WhatsApp
+    window.open(`https://wa.me/5491122911567?text=${mensaje}`, '_blank');
 });
-    </div>
-    // 1. Seleccionamos todos los botones que tienen la clase 'zone-btn'
-    const botonesZona = document.querySelectorAll('.zone-btn');
-
-    botonesZona.forEach(boton => {
-        boton.addEventListener('click', () => {
-            // 2. Quitamos la clase 'active' de todos los botones para "apagarlos"
-            botonesZona.forEach(b => b.classList.remove('active'));
-
-            // 3. Agregamos la clase 'active' solo al botón que tocamos
-            boton.classList.add('active');
-
-            // 4. Guardamos la zona en la "memoria" del navegador para el futuro
-            const zonaElegida = boton.getAttribute('data-zona');
-            console.log("Zona seleccionada para logística:", zonaElegida);
-            
-            // Aquí podrías disparar una alerta o filtrar productos luego
-        });
-    });
+    
+document.querySelector('nav a:last-child').addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleCart();
+});
 </script>
 </body>
 </html>
