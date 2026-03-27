@@ -403,24 +403,31 @@
 </div>
 </section>
 <script>
-    // 1. Seleccionamos todos los botones que tienen la clase 'zone-btn'
-    const botonesZona = document.querySelectorAll('.zone-btn');
+      <div id="cart-overlay" class="fixed inset-0 bg-black/80 z-[60] hidden transition-opacity duration-300 opacity-0"></div>
 
-    botonesZona.forEach(boton => {
-        boton.addEventListener('click', () => {
-            // 2. Quitamos la clase 'active' de todos los botones para "apagarlos"
-            botonesZona.forEach(b => b.classList.remove('active'));
+<div id="cart-panel" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-stone-950 z-[70] transform translate-x-full transition-transform duration-500 ease-in-out border-l border-white/10 flex flex-col">
+    <div class="p-6 border-b border-white/10 flex justify-between items-center">
+        <h2 class="font-playfair text-2xl text-white uppercase tracking-widest">Tu Pedido</h2>
+        <button id="close-cart" class="text-white/50 hover:text-brand-gold">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
 
-            // 3. Agregamos la clase 'active' solo al botón que tocamos
-            boton.classList.add('active');
+    <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+        <p class="text-white/30 text-center font-light mt-10 italic">El carrito está vacío...</p>
+    </div>
 
-            // 4. Guardamos la zona en la "memoria" del navegador para el futuro
-            const zonaElegida = boton.getAttribute('data-zona');
-            console.log("Zona seleccionada para logística:", zonaElegida);
-            
-            // Aquí podrías disparar una alerta o filtrar productos luego
-        });
-    });
+    <div class="p-6 border-t border-white/10 bg-black/50">
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-white/50 uppercase tracking-widest text-xs">Total Estimado</span>
+            <span id="cart-total" class="text-brand-gold font-bold text-3xl">$0</span>
+        </div>
+        <button id="whatsapp-btn" class="w-full bg-brand-red text-white py-4 rounded font-bold uppercase tracking-[0.2em] hover:bg-red-800 transition shadow-lg">
+            Enviar Pedido via WhatsApp
+        </button>
+        <p class="text-[10px] text-white/30 text-center mt-4">Los precios finales pueden variar según el pesaje exacto.</p>
+    </div>
+
     let carrito = [];
 const cartPanel = document.getElementById('cart-panel');
 const cartOverlay = document.getElementById('cart-overlay');
@@ -502,31 +509,25 @@ document.getElementById('whatsapp-btn').addEventListener('click', () => {
     
     window.open(`https://wa.me/541112345678?text=${mensaje}`, '_blank');
 });
+    </div>
+    // 1. Seleccionamos todos los botones que tienen la clase 'zone-btn'
+    const botonesZona = document.querySelectorAll('.zone-btn');
+
+    botonesZona.forEach(boton => {
+        boton.addEventListener('click', () => {
+            // 2. Quitamos la clase 'active' de todos los botones para "apagarlos"
+            botonesZona.forEach(b => b.classList.remove('active'));
+
+            // 3. Agregamos la clase 'active' solo al botón que tocamos
+            boton.classList.add('active');
+
+            // 4. Guardamos la zona en la "memoria" del navegador para el futuro
+            const zonaElegida = boton.getAttribute('data-zona');
+            console.log("Zona seleccionada para logística:", zonaElegida);
+            
+            // Aquí podrías disparar una alerta o filtrar productos luego
+        });
+    });
 </script>
-    <div id="cart-overlay" class="fixed inset-0 bg-black/80 z-[60] hidden transition-opacity duration-300 opacity-0"></div>
-
-<div id="cart-panel" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-stone-950 z-[70] transform translate-x-full transition-transform duration-500 ease-in-out border-l border-white/10 flex flex-col">
-    <div class="p-6 border-b border-white/10 flex justify-between items-center">
-        <h2 class="font-playfair text-2xl text-white uppercase tracking-widest">Tu Pedido</h2>
-        <button id="close-cart" class="text-white/50 hover:text-brand-gold">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    </div>
-
-    <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
-        <p class="text-white/30 text-center font-light mt-10 italic">El carrito está vacío...</p>
-    </div>
-
-    <div class="p-6 border-t border-white/10 bg-black/50">
-        <div class="flex justify-between items-center mb-6">
-            <span class="text-white/50 uppercase tracking-widest text-xs">Total Estimado</span>
-            <span id="cart-total" class="text-brand-gold font-bold text-3xl">$0</span>
-        </div>
-        <button id="whatsapp-btn" class="w-full bg-brand-red text-white py-4 rounded font-bold uppercase tracking-[0.2em] hover:bg-red-800 transition shadow-lg">
-            Enviar Pedido via WhatsApp
-        </button>
-        <p class="text-[10px] text-white/30 text-center mt-4">Los precios finales pueden variar según el pesaje exacto.</p>
-    </div>
-</div>
 </body>
 </html>
