@@ -86,10 +86,21 @@
                     Selección premium lista para tu parrilla.
                 </p>
                 
-               <div class="flex items-center gap-4 mb-16" id="zona-selector">
-    <button class="zone-btn active" data-zona="caba">CABA</button>
-    <button class="zone-btn" data-zona="norte">GBA Norte</button>
-    <button class="zone-btn" data-zona="oeste">GBA Oeste</button>
+               <div class="flex flex-col items-center gap-4 mb-16">
+    <div class="flex items-center gap-4" id="zona-selector">
+        <button class="zone-btn active" data-zona="caba">CABA</button>
+        <button class="zone-btn" data-zona="norte">GBA Norte</button>
+        <button class="zone-btn" data-zona="oeste">GBA Oeste</button>
+    </div>
+    
+    <div class="relative mt-4">
+        <input type="number" id="cp-input" placeholder="Tu Código Postal" 
+               class="bg-white/5 border border-white/20 text-white px-4 py-2 rounded-l focus:outline-none focus:border-brand-gold w-40">
+        <button id="calc-envio" class="bg-brand-gold text-black px-4 py-2 rounded-r font-bold hover:bg-yellow-600 transition uppercase text-xs">
+            Calcular Envío
+        </button>
+    </div>
+    <p id="envio-status" class="text-xs text-brand-gold italic mt-2"></p>
 </div>
               
                 <button onclick="document.getElementById('cortes').scrollIntoView({behavior: 'smooth'})" class="px-12 py-5 bg-brand-red ...">
@@ -431,71 +442,77 @@
 
 <script>
 let carrito = [];
-const cartPanel = document.getElementById('cart-panel');
-const cartOverlay = document.getElementById('cart-overlay');
-const cartItemsContainer = document.getElementById('cart-items');
-const cartTotalElement = document.getElementById('cart-total');
+let costoEnvio = 0;
 
-function toggleCart() {
-    cartPanel.classList.toggle('translate-x-full');
-    cartOverlay.classList.toggle('hidden');
-    setTimeout(() => cartOverlay.classList.toggle('opacity-0'), 10);
-}
+// Definimos los costos por zona de CP (Ejemplos, cámbialos a tu gusto)
+const tarifarioEnvio = {
+    caba: { costo: 2500, rango: [1000, 1499] },
+    norte: { costo: 4500, rango: [1600, 1699] },
+    oeste: { costo: 4000, rango: [1700, 1799] }
+};
 
-document.getElementById('close-cart').addEventListener('click', toggleCart);
+// Función para calcular envío por CP
+document.getElementById('calc-envio').addEventListener('click', () => {
+    const cp = parseInt(document.getElementById('cp-input').value);
+    const status = document.getElementById('envio-status');
+    
+    let encontrado = false;
 
-// ... (continuación del código de arriba)
-
-// Configuración de botones AGREGAR
-document.querySelectorAll('button').forEach(btn => {
-    // IMPORTANTE: El código busca la palabra exacta "Agregar" o "AGREGAR"
-    if (btn.innerText.toUpperCase() === "AGREGAR") {
-        btn.addEventListener('click', () => {
-            const card = btn.closest('.group');
-            const nombre = card.querySelector('h3').innerText;
-            const precioTexto = card.querySelector('.text-brand-gold.text-2xl').innerText;
-            
-            // Limpiamos el precio ($ y puntos) para poder sumar
-            const precio = parseInt(precioTexto.replace('$', '').replace(/\./g, ''));
-            
-            agregarAlCarrito(nombre, precio);
-            // Abrir el carrito automáticamente al agregar algo
-            if(cartPanel.classList.contains('translate-x-full')) toggleCart();
-        });
+    // Buscamos en qué rango cae el CP ingresado
+    for (const zona in tarifarioEnvio) {
+        const [min, max] = tarifarioEnvio[zona].rango;
+        if (cp >= min && cp <= max) {
+            costoEnvio = tarifarioEnvio[zona].costo;
+            status.innerText = `Envio a ${zona.toUpperCase()}: $${costoEnvio.toLocaleString()}`;
+            encontrado = true;
+            break;
+        }
     }
+
+    if (!encontrado) {
+        costoEnvio = 6000; // Costo por defecto si es muy lejos
+        status.innerText = "Zona fuera de rango estándar: Envío especial $6.000";
+    }
+
+    renderizarCarrito(); // Actualizamos el total del carrito
 });
 
-function agregarAlCarrito(nombre, precio) {
-    const itemExistente = carrito.find(item => item.nombre === nombre);
-    if (itemExistente) {
-        itemExistente.cantidad++;
-    } else {
-        carrito.push({ nombre, precio, cantidad: 1 });
-    }
-    renderizarCarrito();
-}
-
+// Modificar la función renderizarCarrito para incluir el envío
 function renderizarCarrito() {
-    if (carrito.length === 0) {
+    if (carrito.length === 0 && costoEnvio === 0) {
         cartItemsContainer.innerHTML = '<p class="text-white/30 text-center font-light mt-10 italic">El carrito está vacío...</p>';
         cartTotalElement.innerText = '$0';
         return;
     }
 
-    cartItemsContainer.innerHTML = carrito.map((item, index) => `
-        <div class="flex justify-between items-center border-b border-white/5 pb-4">
-            <div>
-                <h4 class="text-white font-playfair text-lg">${item.nombre}</h4>
-                <p class="text-brand-gold text-sm">$${item.precio.toLocaleString()} x ${item.cantidad}</p>
-            </div>
-            <button onclick="eliminarDelCarrito(${index})" class="text-red-900 hover:text-red-500">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path></svg>
-            </button>
-        </div>
-    `).join('');
+    cartItemsContainer.innerHTML = '';
+    let subtotal = 0;
 
-    const total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-    cartTotalElement.innerText = `$${total.toLocaleString()}`;
+    carrito.forEach((item, index) => {
+        subtotal += item.precio * item.cantidad;
+        cartItemsContainer.innerHTML += `
+            <div class="flex justify-between items-center bg-white/5 p-4 rounded border border-white/10 mb-2">
+                <div>
+                    <h4 class="text-white font-medium">${item.nombre}</h4>
+                    <p class="text-brand-gold text-sm">$${item.precio.toLocaleString()} x ${item.cantidad}</p>
+                </div>
+                <button onclick="eliminarDelCarrito(${index})" class="text-red-500 text-[10px] uppercase">Quitar</button>
+            </div>
+        `;
+    });
+
+    // Agregar visualmente el envío al final de la lista de productos
+    if (costoEnvio > 0) {
+        cartItemsContainer.innerHTML += `
+            <div class="flex justify-between items-center border-t border-brand-gold/30 pt-4 mt-4">
+                <span class="text-white/70 text-sm italic">Costo de Envío</span>
+                <span class="text-brand-gold text-sm">$${costoEnvio.toLocaleString()}</span>
+            </div>
+        `;
+    }
+
+    const totalFinal = subtotal + costoEnvio;
+    cartTotalElement.innerText = `$${totalFinal.toLocaleString()}`;
 }
 
 // Función global para que el botón "X" de cada item funcione
@@ -513,26 +530,33 @@ botonesZona.forEach(boton => {
     });
 });
 
-// Botón final de WhatsApp
 document.getElementById('whatsapp-btn').addEventListener('click', () => {
     if (carrito.length === 0) return alert("Tu pedido está vacío");
     
+    // 1. Obtenemos la zona y el CP
     const zona = document.querySelector('.zone-btn.active')?.innerText || "No especificada";
-    let mensaje = `Hola San Remo Boutique! 👋 Mi pedido (%2A${zona}%2A):%0A%0A`;
+    const cp = document.getElementById('cp-input').value || "S/D";
+
+    // 2. Empezamos el mensaje (Usamos %2A para negritas)
+    let mensaje = `Hola San Remo Boutique! 👋%0A`;
+    mensaje += `Mi pedido para %2A${zona}%2A (CP: ${cp}):%0A%0A`;
     
+    // 3. Listamos los productos
     carrito.forEach(item => {
         mensaje += `- ${item.cantidad} x ${item.nombre} ($${(item.precio * item.cantidad).toLocaleString()})%0A`;
     });
+
+    // 4. AGREGAMOS EL ENVÍO (Esto es lo nuevo del punto 3)
+    if (costoEnvio > 0) {
+        mensaje += `%0A🚚 %2AEnvío:%2A $${costoEnvio.toLocaleString()}`;
+    }
+
+    // 5. El Total Final (que ya calculamos en el renderizarCarrito)
+    mensaje += `%0A%0A%2ATOTAL FINAL: ${cartTotalElement.innerText}%2A`;
     
-    mensaje += `%0A%2ATotal Estimado: ${cartTotalElement.innerText}%2A`;
-    
-    // Reemplaza con tu número real de WhatsApp
-    window.open(`https://wa.me/5491122911567?text=${mensaje}`, '_blank');
-});
-    
-document.querySelector('nav a:last-child').addEventListener('click', (e) => {
-    e.preventDefault();
-    toggleCart();
+    // 6. Abrimos WhatsApp
+    const telefono = "549112211567"; 
+    window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
 });
 </script>
 </body>
